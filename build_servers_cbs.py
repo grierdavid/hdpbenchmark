@@ -10,7 +10,8 @@ import string
 Build Servers with attached CBS and CloudNetworks
 '''
 
-cred_file = os.path.expanduser('.ipython/profile_cbdteam/conf/.rackspace_cloud_credentials')
+pyrax.set_setting("identity_type", "rackspace")
+cred_file = os.path.expanduser('~/.ipython/profile_cbdteam/conf/.rackspace_cloud_credentials')
 pyrax.set_credential_file(cred_file)
 
 my_region = 'IAD'
@@ -31,10 +32,14 @@ cnw = pyrax.connect_to_cloud_networks(region=my_region)
 #| performance2-30  | 30 GB Performance       | 30720     | 40   | 300       |         | 8     | 2500.0      | N/A       |
 #| performance2-60  | 60 GB Performance       | 61440     | 40   | 600       |         | 16    | 5000.0      | N/A       |
 #| performance2-90  | 90 GB Performance
+#OnMental i- Cent 6.5: a4a07273-6e5c-4092-a4bd-b3a2fc669a5f
+#Cent 6.5 (PVHVM): a84b1592-6817-42da-a57c-3c13f3cfc1da
+#CentOS 7 (PVHVM): 4da79ffd-46f0-4f7c-9ade-490f04cc8994
+#OnMetal - CentOS 7: 11cffab8-9a65-4e9a-a242-a2bd25a4486d
 
 
 #Needs to be fqdn and based on a domain associated with this account
-clust_prefix='dgbm02-'
+clust_prefix='dgbm07-'
 dn_name=clust_prefix  + 'datanode'
 mn_name=clust_prefix  + 'masternode'
 pvt_nets = []
@@ -42,16 +47,17 @@ cbs_ids = []
 cbs_ids_dict = {}
 mn_ids = []
 dn_ids = []
-imgname = 'CentOS 6.5'
+nn_image = 'a84b1592-6817-42da-a57c-3c13f3cfc1da'
+dn_image = 'a4a07273-6e5c-4092-a4bd-b3a2fc669a5f'
 mn_flavor = 'performance2-15'
-dn_flavor = 'performance2-15'
+dn_flavor = 'onmetal-io1'
 new_network_name = clust_prefix + 'hadoop_net'
 new_network_cidr = "192.168.5.0/24"
 datanodes = 3
 datanode = 1
 masternodes=2
 masternode=1
-vols_per_datanode=3
+vols_per_datanode=0
 cbs_vol_type="SATA"
 pubkey='dgmuse'
 
@@ -73,8 +79,8 @@ while (datanode <= datanodes):
         datanode = datanode + 1
 
 datanode=1
-myimage = [img for img in cs.images.list()
-                if imgname in img.name][0]
+#myimage = [img for img in cs.images.list()
+#                if imgname in img.name][0]
 #myflavor = [flavor for flavor in cs.flavors.list()
 #                if flavor.ram == size][0]
 
